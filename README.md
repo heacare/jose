@@ -321,4 +321,4 @@ main() async {
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: https://github.com/appsup-dart/jose/issues
+[tracker]: https://github.com/heacare/jose2/issues
