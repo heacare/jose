@@ -1,6 +1,6 @@
 name: jose2
 description: Javascript Object Signing and Encryption (JOSE) library supporting JWE, JWS, JWK and JWT
-version: 0.3.2
+version: 0.3.3
 repository: https://github.com/heacare/jose
 
 environment:
@@ -22,4 +22,5 @@ dev_dependencies:
 
 false_secrets:
 - test/pem/*.key
-- example/*.key*
+- example/*.key
+- example/*.key.pub

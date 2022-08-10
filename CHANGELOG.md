@@ -1,3 +1,11 @@
+## 0.3.3
+
+- Fork into to jose2
+- Set up CI and lints
+- Make unprotected header optional in JWE
+- Fix JWE tests
+- Fixed a bug where the keyid isn't supplied if a jwk to be constructed is a EcPublicKey
+- Handle JWT expiry with decimal point
 
 ## 0.3.2
 
