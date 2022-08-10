@@ -153,4 +153,18 @@ void main() {
           'AVO9iT5AV4CzvDJCdhSFlQ');
     });
   });
+
+  test('JsonWebTokenClaims can handle doubles in expiration', () {
+    final claims = JsonWebTokenClaims.fromJson({'exp': 1300819380.0});
+    expect(claims.expiry, DateTime.fromMillisecondsSinceEpoch(1300819380000));
+    final json = claims.toJson();
+    expect(json["exp"], 1300819380);
+  });
+  test('JsonWebTokenClaims can produce doubles in expiration', () {
+    final claims = JsonWebTokenClaims.fromJson({'exp': 1300819380.000001});
+    expect(
+        claims.expiry, DateTime.fromMicrosecondsSinceEpoch(1300819380000001));
+    final json = claims.toJson();
+    expect(json["exp"], 1300819380.000001);
+  });
 }

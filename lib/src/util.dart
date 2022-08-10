@@ -88,9 +88,10 @@ class JsonObject {
       case Uri:
         return Uri.parse(v) as T;
       case DateTime:
-        return DateTime.fromMillisecondsSinceEpoch(v * 1000) as T;
+        return DateTime.fromMicrosecondsSinceEpoch((v * 1000 * 1000).round())
+            as T;
       case Duration:
-        return Duration(seconds: v) as T;
+        return Duration(microseconds: (v * 1000 * 1000).round()) as T;
       case String:
       case num:
       case bool:

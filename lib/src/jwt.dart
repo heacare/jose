@@ -65,8 +65,9 @@ class JsonWebTokenClaims extends JsonObject {
   Iterable<Exception> validate(
       {Duration expiryTolerance = const Duration(),
       Uri? issuer,
-      String? clientId}) sync* {
-    final now = DateTime.now();
+      String? clientId,
+      DateTime? now}) sync* {
+    now ??= DateTime.now();
     final diff = now.difference(expiry!);
     if (diff > expiryTolerance) {
       yield JoseException(
