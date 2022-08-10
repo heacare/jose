@@ -1,3 +1,8 @@
+## 0.3.4
+
+- Fix package import in tests and example
+- Update CI badge
+
 ## 0.3.3
 
 - Fork into to jose2
