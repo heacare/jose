@@ -1,6 +1,5 @@
 
-[![Build Status](https://travis-ci.org/appsup-dart/jose.svg?branch=master)](https://travis-ci.org/appsup-dart/jose)
-
+[![checks](https://github.com/heacare/jose2/actions/workflows/checks.yml/badge.svg)](https://github.com/heacare/jose2/actions/workflows/checks.yml)
 
 Javascript Object Signing and Encryption (JOSE) library
 

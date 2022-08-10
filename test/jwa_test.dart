@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:crypto_keys/crypto_keys.dart';
-import 'package:jose2/jose.dart';
 import 'package:test/test.dart';
+import 'package:jose2/src/jwa.dart';
 
 void main() {
   group('JWA', () {

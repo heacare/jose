@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:jose2/jose.dart';
+import 'package:jose2/jose2.dart';
 
 void main() async {
   await example1();
