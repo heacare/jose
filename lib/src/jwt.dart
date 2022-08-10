@@ -1,10 +1,11 @@
 /// [JSON Web Token](https://tools.ietf.org/html/rfc7519)
-library jose.jwt;
+library jose2.jwt;
+
+import 'dart:async';
 
 import 'jose.dart';
 import 'jwk.dart';
 import 'util.dart';
-import 'dart:async';
 import 'jws.dart';
 
 /// The set of claims conveyed by the [JsonWebToken]
@@ -112,7 +113,7 @@ class JsonWebToken {
     var joseObject = JoseObject.fromCompactSerialization(serialization);
     var content = await joseObject.getPayload(keyStore,
         allowedAlgorithms: allowedArguments);
-    var claims;
+    JsonWebTokenClaims claims;
     if (content.mediaType == 'JWT') {
       claims = (await decodeAndVerify(content.stringContent, keyStore,
               allowedArguments: allowedArguments))

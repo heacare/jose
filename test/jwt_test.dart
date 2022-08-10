@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
-import 'package:jose/src/jwt.dart';
-import 'package:jose/src/jwk.dart';
+import 'package:jose2/src/jwt.dart';
+import 'package:jose2/src/jwk.dart';
 
 void main() {
   group('JWT Examples from RFC7519', () {

@@ -1,13 +1,15 @@
 /// [JSON Object Signing and Encryption](https://tools.ietf.org/html/rfc7515)
-library jose.jose;
+library jose2.jose;
+
+import 'dart:async';
+import 'dart:convert' as convert;
+
+import 'package:meta/meta.dart';
 
 import 'util.dart';
 import 'jws.dart';
 import 'jwe.dart';
 import 'jwk.dart';
-import 'dart:async';
-import 'dart:convert' as convert;
-import 'package:meta/meta.dart';
 
 /// Contains the `JSON Object Signing and Encryption` header parameters for
 /// [JsonWebSignature] and [JsonWebEncryption]

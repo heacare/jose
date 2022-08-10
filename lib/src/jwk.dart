@@ -1,5 +1,5 @@
 /// [JSON Web Key](https://tools.ietf.org/html/rfc7517)
-library jose.jwk;
+library jose2.jwk;
 
 import 'dart:async';
 import 'dart:async' as async show runZoned;
@@ -12,11 +12,11 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:crypto_keys/crypto_keys.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-import 'package:jose/src/jwa.dart';
 import 'package:meta/meta.dart';
 import 'package:x509/x509.dart' as x509;
 
 import 'jose.dart';
+import 'jwa.dart';
 import 'util.dart';
 
 /// JSON Web Key (JWK) represents a cryptographic key

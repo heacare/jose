@@ -1,6 +1,6 @@
-import 'package:jose/src/jwk.dart';
-import 'package:jose/src/jws.dart';
-import 'package:jose/src/jose.dart';
+import 'package:jose2/src/jwk.dart';
+import 'package:jose2/src/jws.dart';
+import 'package:jose2/src/jose.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:crypto_keys/crypto_keys.dart';
-import 'package:jose/jose.dart';
+import 'package:jose2/jose.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -10,7 +10,7 @@ void main() {
       var data = utf8.encode('hello world');
 
       for (var a in JsonWebAlgorithm.allAlgorithms) {
-        print('${a.name}');
+        print(a.name);
         var keyPair = a.generateCryptoKeyPair();
 
         var key = a.jwkFromCryptoKeyPair(keyPair);

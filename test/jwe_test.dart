@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:test/test.dart';
-import 'package:jose/src/jwe.dart';
-import 'package:jose/src/jwk.dart';
+import 'package:jose2/src/jwe.dart';
+import 'package:jose2/src/jwk.dart';
 
 void main() {
   group('JWE Examples from RFC7516', () {

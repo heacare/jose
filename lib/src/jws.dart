@@ -1,10 +1,13 @@
 /// [JSON Web Signature](https://tools.ietf.org/html/rfc7515)
-library jose.jws;
+library jose2.jws;
+
+import 'dart:convert' as convert;
 
 import 'util.dart';
 import 'jwk.dart';
 import 'jose.dart';
-import 'dart:convert' as convert;
+
+// ignore_for_file: no_leading_underscores_for_local_identifiers
 
 /// JSON Web Signature (JWS) represents content secured with digital signatures
 /// or Message Authentication Codes (MACs) using JSON-based data structures.
@@ -31,9 +34,10 @@ class JsonWebSignature extends JoseObject {
   /// Constructs a [JsonWebSignature] from its flattened or general JSON
   /// representation
   factory JsonWebSignature.fromJson(Map<String, dynamic> json) {
-    var signatures;
+    Iterable<JoseRecipient> signatures;
     if (json.containsKey('signatures')) {
-      signatures = json['signatures'].map((v) => _JwsRecipient.fromJson(v));
+      signatures = json['signatures']
+          .map<JoseRecipient>((v) => _JwsRecipient.fromJson(v));
     } else {
       signatures = [_JwsRecipient.fromJson(json)];
     }
