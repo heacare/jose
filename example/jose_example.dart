@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:jose2/jose2.dart';
+import 'package:x509/x509.dart';
 
 void main() async {
   await example1();
@@ -12,6 +14,7 @@ void main() async {
   await example6();
   await example7();
   await example8();
+  await example9();
 }
 
 // decode and verify a JWS
@@ -293,9 +296,9 @@ Future<void> example7() async {
   print('jwt compact serialization: ${jws.toCompactSerialization()}');
 }
 
-// generate a key for use with ES256 signing
+// generate a key for use with ES256K signing
 Future<void> example8() async {
-  var alg = JsonWebAlgorithm.getByName('ES256');
+  var alg = JsonWebAlgorithm.getByName('ES256K');
 
   var key = alg.generateRandomKey();
   print(JsonEncoder.withIndent(' ').convert(key));
@@ -306,4 +309,62 @@ Future<void> example8() async {
   final valid = key.verify(hash, sig);
 
   print('valid? $valid');
+}
+
+// create a JWT, sign with ES256K
+example9() async {
+  var claims = JsonWebTokenClaims.fromJson(
+    {
+      "iss":
+          "did:ethr:0x1:0x0361643e91d3071c0fe564df2dde35f87935f483b7ed09f5cb123dc108579028f6",
+      "sub":
+          "did:ethr:0x1:0x0361643e91d3071c0fe564df2dde35f87935f483b7ed09f5cb123dc108579028f6",
+      "aud": "https://client.example.org/",
+      "exp": (DateTime.now().add(Duration(hours: 1)).millisecondsSinceEpoch ~/
+          1000),
+      "iat": (DateTime.now().millisecondsSinceEpoch ~/ 1000)
+    },
+  );
+
+  // create a builder, decoding the JWT in a JWS, so using a
+  // JsonWebSignatureBuilder
+  var builder = JsonWebSignatureBuilder();
+
+  // set the content
+  builder.jsonContent = claims.toJson();
+
+  // add a key to sign, can only add one for JWT
+  //
+  // this using Ethereum PrivateKey (secp256k1), you can generate using web3dart library
+  // d = base64 encode from PrivateKey
+  // x = base64 encode from PublicKey x (ECPoint)
+  // y = base64 encode from PublicKey y (ECPoint)
+  //
+  // final jwk = JsonWebKey.generate('ES256K');
+  final jwk = JsonWebKey.fromJson({
+    'kty': 'EC',
+    'd': 'TiYuH/Y7hDwh71V5NXcJm2MpmH2nYLPmv0e6viRgWIM=',
+    'x': 'YWQ-kdMHHA_lZN8t3jX4eTX0g7ftCfXLEj3BCFeQKPY',
+    'y': 'DTiTWbuPAHgZdLU8VUUVvpBAm5qfWzAXbG7l-RN1zls',
+    'crv': 'P-256K',
+    'alg': 'ES256K',
+    'use': 'sig',
+    'keyOperations': ['sign', 'verify'],
+    'kid':
+        'did:ethr:0x1:0x0361643e91d3071c0fe564df2dde35f87935f483b7ed09f5cb123dc108579028f6',
+  });
+
+  print(jwk.toJson().toString());
+
+  builder.addRecipient(jwk);
+
+  // build the jws
+  var jws = builder.build();
+
+  // output the compact serialization
+  print("jwt compact serialization: ${jws.toCompactSerialization()}");
+
+  // verify jwt
+  var jwks = JsonWebKeyStore()..addKey(jwk);
+  print('valid? ${await jws.verify(jwks)}');
 }

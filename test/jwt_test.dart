@@ -1,3 +1,4 @@
+import 'package:jose2/jose2.dart';
 import 'package:test/test.dart';
 import 'package:jose2/src/jwt.dart';
 import 'package:jose2/src/jwk.dart';
@@ -166,5 +167,56 @@ void main() {
         claims.expiry, DateTime.fromMicrosecondsSinceEpoch(1300819380000001));
     final json = claims.toJson();
     expect(json["exp"], 1300819380.000001);
+  });
+
+  test('Create and verify JWT with ES256K', () async {
+    var claims = JsonWebTokenClaims.fromJson(
+      {
+        "iss":
+            "did:ethr:0x1:0x0361643e91d3071c0fe564df2dde35f87935f483b7ed09f5cb123dc108579028f6",
+        "sub":
+            "did:ethr:0x1:0x0361643e91d3071c0fe564df2dde35f87935f483b7ed09f5cb123dc108579028f6",
+        "aud": "https://client.example.org/",
+        "exp": 2525919978,
+        "iat": (DateTime.now().millisecondsSinceEpoch ~/ 1000)
+      },
+    );
+
+    // create a builder, decoding the JWT in a JWS, so using a
+    // JsonWebSignatureBuilder
+    var builder = JsonWebSignatureBuilder();
+
+    // set the content
+    builder.jsonContent = claims.toJson();
+
+    // add a key to sign, can only add one for JWT
+    //
+    // this using Ethereum PrivateKey (secp256k1), you can generate using web3dart library
+    // d = base64 encode from PrivateKey
+    // x = base64 encode from PublicKey x (ECPoint)
+    // y = base64 encode from PublicKey y (ECPoint)
+    //
+    // final jwk = JsonWebKey.generate('ES256K');
+    final jwk = JsonWebKey.fromJson({
+      'kty': 'EC',
+      'd': 'TiYuH/Y7hDwh71V5NXcJm2MpmH2nYLPmv0e6viRgWIM=',
+      'x': 'YWQ-kdMHHA_lZN8t3jX4eTX0g7ftCfXLEj3BCFeQKPY',
+      'y': 'DTiTWbuPAHgZdLU8VUUVvpBAm5qfWzAXbG7l-RN1zls',
+      'crv': 'P-256K',
+      'alg': 'ES256K',
+      'use': 'sig',
+      'keyOperations': ['sign', 'verify'],
+      'kid':
+          'did:ethr:0x1:0x0361643e91d3071c0fe564df2dde35f87935f483b7ed09f5cb123dc108579028f6',
+    });
+
+    builder.addRecipient(jwk);
+
+    // build the jws
+    var jws = builder.build();
+
+    // verify jwt
+    var jwks = JsonWebKeyStore()..addKey(jwk);
+    expect(await jws.verify(jwks), true);
   });
 }
